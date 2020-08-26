@@ -7,10 +7,18 @@ const submitFormButton = document.querySelector('#submitForm');
 
 function getQuote(category) {
   const apiUrl = `https://api.chucknorris.io/jokes/random?category=${category}`;
-  const chuckSaysParagraph = document.querySelector('#chuckSays');
 
-  get(apiUrl).then(function(response) {
-    chuckSaysParagraph.innerHTML = response.value;
+  $.ajax({
+      type: "GET",
+      url: apiUrl,
+      success: function (response) {
+        $('#chuckSays').text(response.value);
+        $('#myModal').modal('toggle');
+
+      },
+      error: function (error) {
+        console.error("ERROR", error);
+      }
   });
 }
 
@@ -27,4 +35,6 @@ submitFormButton.addEventListener('click', function(e) {
   getQuote(category);
 });
 
-getQuote(category);
+$(document).ready(() => {
+  getQuote(category);
+})
